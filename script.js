@@ -182,20 +182,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (preset === "dark") {
       headerColorPicker.value = "#1f2937";
-  
+
       buttonsColorPicker.value = "#3b82f6";
       browserUrl.classList.remove("bg-white", "text-gray-800");
       browserUrl.classList.add("bg-gray-700", "text-gray-300");
     } else if (preset === "light") {
       headerColorPicker.value = "#f3f4f6";
-  
+
       buttonsColorPicker.value = "#3b82f6";
       browserUrl.classList.remove("bg-gray-700", "text-gray-300");
       browserUrl.classList.add("bg-white", "text-gray-800");
     } else if (preset === "macos") {
       document.querySelector('[data-style="mac"]').click();
       headerColorPicker.value = "#2d2d2d";
-  
     } else if (preset === "windows") {
       document.querySelector('[data-style="windows"]').click();
       headerColorPicker.value = "#0078d7";
@@ -220,8 +219,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     const originalText = downloadBtn.innerHTML;
-    downloadBtn.innerHTML =
-      '<i class="fas fa-check mr-2"></i> Mockup Downloaded!';
+    downloadBtn.innerHTML = '<i class="fas fa-check mr-2"></i>Downloaded!';
     downloadBtn.classList.add("bg-green-600", "from-green-600", "to-green-700");
 
     setTimeout(() => {
