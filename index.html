@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BrowserMock - Modern Browser Mockup Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      body {
+        line-height: 0.5 !important;
+      }
+      .browser-mockup {
+        position: relative;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease;
+      }
+
+      .browser-mockup:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      }
+
+      .browser-header {
+        height: 40px;
+        display: flex;
+        align-items: center;
+        padding: 0 15px;
+        position: relative;
+      }
+
+      .browser-buttons {
+        display: flex;
+        gap: 8px;
+      }
+
+      .browser-button {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+      }
+
+      .browser-url {
+        flex-grow: 1;
+        margin: 0 15px;
+        height: 28px;
+        border-radius: 14px;
+        padding: 0 15px;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+      }
+
+      .browser-content {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+      }
+
+      .color-picker {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        width: 100px;
+        height: 50px;
+        border: none;
+        cursor: pointer;
+        background-color: transparent;
+      }
+
+      .color-picker::-webkit-color-swatch {
+        border-radius: 10px;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .color-picker::-moz-color-swatch {
+        border-radius: 50%;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .range-slider {
+        -webkit-appearance: none;
+        height: 6px;
+        border-radius: 3px;
+        background: linear-gradient(
+          90deg,
+          #3b82f6 0%,
+          #3b82f6 var(--value-percent),
+          #374151 var(--value-percent),
+          #374151 100%
+        );
+      }
+
+      .range-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #3b82f6;
+        cursor: pointer;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+      }
+
+      .download-btn {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .download-btn::after {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -60%;
+        width: 200%;
+        height: 200%;
+        background: rgba(255, 255, 255, 0.1);
+        transform: rotate(30deg);
+        transition: all 0.3s;
+      }
+
+      .download-btn:hover::after {
+        left: 100%;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      .pulse {
+        animation: pulse 2s infinite;
+      }
+    </style>
+  </head>
+  <body class="bg-natural-900 text-natural-200 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+      <!-- Header -->
+      <header
+        class="flex flex-col md:flex-row justify-between items-center mb-12"
+      >
+        <div class="flex items-center mb-4 md:mb-0">
+          <div
+            class="bg-blue-600 w-8 h-8 rounded-lg flex items-center justify-center mr-3"
+          >
+            <i class="fas fa-window-maximize text-white text-xl"></i>
+          </div>
+          <h1
+            class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-natural-900 to-natural-900 flex items-center gap-2 "
+          >
+            BrowserMock
+            <span
+              class="text-xs  py-1 px-2 rounded-full text-red-500 bg-red-200"
+              >Beta</span
+            >
+          </h1>
+        </div>
+        <div class="flex items-center space-x-4">
+          <a href="#" class="text-natural-400 hover:text-white transition">
+            <i class="fab fa-github text-xl"></i>
+          </a>
+          <a href="#" class="text-natural-400 hover:text-white transition">
+            <i class="fab fa-twitter text-xl"></i>
+          </a>
+          <a href="#" class="text-natural-400 hover:text-white transition">
+            <i class="fas fa-question-circle text-xl"></i>
+          </a>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Preview Section -->
+        <div class="lg:col-span-2">
+          <div class=" rounded-xl p-6 shadow-xl">
+            <h2 class="text-xl font-semibold mb-4 flex text-blue-800 items-center">
+              <i class="fas fa-eye mr-2 text-blue-800"></i> Preview
+            </h2>
+            <div class="flex justify-center items-center mb-6">
+              <div class="browser-mockup w-full max-w-3xl max-h-[460px]" id="browser-mockup">
+                <div class="browser-header" id="browser-header">
+                  <div class="browser-buttons">
+                    <div class="browser-button bg-red-500"></div>
+                    <div class="browser-button bg-yellow-500"></div>
+                    <div class="browser-button bg-green-500"></div>
+                  </div>
+                  <div
+                    class="browser-url bg-natural-700 text-white"
+                    id="browser-url"
+                  >
+                    https://browsermock.dev
+                  </div>
+                  <div class="flex items-center">
+                    <i class="fas fa-lock text-xs text-green-400 mr-1"></i>
+                  </div>
+                </div>
+                <div class="browser-content bg-natural-900" id="browser-content">
+                  <div
+                    class="w-full h-full flex flex-col items-center justify-center"
+                  >
+                    <label for="image-upload" class="cursor-pointer">
+                      <div
+                        class="border-2 m-10 border-dashed border-natural-700 rounded-lg p-8 text-center hover:border-blue-500 transition"
+                      >
+                        <i
+                          class="fas fa-cloud-upload-alt text-4xl text-blue-500 mb-4"
+                        ></i>
+                        <h3 class="text-xl font-bold text-white mb-2">
+                          Upload Screenshot
+                        </h3>
+                        <p class="text-natural-400 mb-4">click to browse</p>
+                        <p class="text-xs text-natural-500">PNG, JPG up to 5MB</p>
+                      </div>
+                      <input
+                        id="image-upload"
+                        type="file"
+                        accept="image/*"
+                        class="hidden"
+                      />
+                    </label>
+                    <div id="uploaded-image" class="hidden w-full h-full"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        
+          </div>
+        </div>
+
+        <!-- Controls Section -->
+        <div class="lg:col-span-1">
+          <div class="bg-natural-100 rounded-xl p-6 shadow-xl sticky top-6">
+            <h2 class="text-xl font-semibold mb-6 flex items-center">
+              <i class="fas fa-sliders-h mr-2 text-blue-400"></i> Customization
+            </h2>
+
+            <!-- URL Settings -->
+            <div class="mb-6">
+              <label class="block text-sm font-medium mb-2">Browser URL</label>
+              <input
+                type="text"
+                id="url-input"
+                value="https://browsermock.dev"
+                class="w-full bg-natural-700 border border-natural-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <!-- Window Style -->
+            <div class="mb-6">
+              <label class="block text-sm font-medium mb-2">Window Style</label>
+              <div class="grid grid-cols-3 gap-2">
+                <button
+                  data-style="mac"
+                  class="window-style-btn bg-natural-700 hover:bg-natural-600 py-2 rounded-lg border border-natural-600 transition active"
+                >
+                  <i class="fas fa-apple-alt mb-1"></i> Mac
+                </button>
+                <button
+                  data-style="windows"
+                  class="window-style-btn bg-natural-700 hover:bg-natural-600 py-2 rounded-lg border border-natural-600 transition"
+                >
+                  <i class="fab fa-windows mb-1"></i> Windows
+                </button>
+                <button
+                  data-style="linux"
+                  class="window-style-btn bg-natural-700 hover:bg-natural-600 py-2 rounded-lg border border-natural-600 transition"
+                >
+                  <i class="fab fa-linux mb-1"></i> Linux
+                </button>
+              </div>
+            </div>
+
+            <!-- Color Customization -->
+            <div class="mb-6">
+              <label class="block text-sm font-medium mb-2">Color Scheme</label>
+              <div class="flex items-center space-x-4">
+                <div>
+                  <label class="block text-xs text-natural-400 mb-1">Header</label>
+                  <input
+                    type="color"
+                    id="header-color"
+                    value="#1f2937"
+                    class="color-picker"
+                  />
+                </div>
+               
+                <div>
+                  <label class="block text-xs text-natural-400 mb-1"
+                    >Buttons</label
+                  >
+                  <input
+                    type="color"
+                    id="buttons-color"
+                    value="#3b82f6"
+                    class="color-picker"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- Size Settings -->
+            <div class="mb-6">
+              <label class="block text-sm font-medium mb-2">Mockup Size</label>
+              <input
+                type="range"
+                id="size-slider"
+                min="50"
+                max="100"
+                value="80"
+                class="w-full range-slider"
+                style="--value-percent: 80%"
+              />
+              <div class="flex justify-between text-xs text-natural-400 mt-1">
+                <span>Small</span>
+                <span>Medium</span>
+                <span>Large</span>
+              </div>
+            </div>
+
+            <!-- Advanced Options -->
+            <div class="mb-6">
+              <div
+                class="flex items-center justify-between cursor-pointer"
+                id="advanced-toggle"
+              >
+                <label class="block text-sm font-medium"
+                  >Advanced Options</label
+                >
+                <i
+                  class="fas fa-chevron-down text-xs transition-transform"
+                  id="advanced-icon"
+                ></i>
+              </div>
+              <div class="mt-3 space-y-3 hidden" id="advanced-options">
+                <div class="flex items-center justify-between">
+                  <label class="text-sm">Show URL Bar</label>
+                  <label
+                    class="relative inline-flex items-center cursor-pointer"
+                  >
+                    <input
+                      type="checkbox"
+                      id="show-url"
+                      checked
+                      class="sr-only peer"
+                    />
+                    <div
+                      class="w-11 h-6 bg-natural-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-natural-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"
+                    ></div>
+                  </label>
+                </div>
+                <div class="flex items-center justify-between">
+                  <label class="text-sm">Show Browser Buttons</label>
+                  <label
+                    class="relative inline-flex items-center cursor-pointer"
+                  >
+                    <input
+                      type="checkbox"
+                      id="show-buttons"
+                      checked
+                      class="sr-only peer"
+                    />
+                    <div
+                      class="w-11 h-6 bg-natural-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-natural-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"
+                    ></div>
+                  </label>
+                </div>
+                <div class="flex items-center justify-between">
+                  <label class="text-sm">Drop Shadow</label>
+                  <label
+                    class="relative inline-flex items-center cursor-pointer"
+                  >
+                    <input
+                      type="checkbox"
+                      id="show-shadow"
+                      checked
+                      class="sr-only peer"
+                    />
+                    <div
+                      class="w-11 h-6 bg-natural-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-natural-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"
+                    ></div>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Presets -->
+            <div>
+              <label class="block text-sm font-medium mb-2"
+                >Quick Presets</label
+              >
+              <div class="grid grid-cols-2 gap-2">
+                <button
+                  class="preset-btn bg-natural-700 hover:bg-natural-600 py-2 rounded-lg border border-natural-600 transition text-xs"
+                  data-preset="dark"
+                >
+                  Dark Mode
+                </button>
+                <button
+                  class="preset-btn bg-natural-700 hover:bg-natural-600 py-2 rounded-lg border border-natural-600 transition text-xs"
+                  data-preset="light"
+                >
+                  Light Mode
+                </button>
+                <button
+                  class="preset-btn bg-natural-700 hover:bg-natural-600 py-2 rounded-lg border border-natural-600 transition text-xs"
+                  data-preset="macos"
+                >
+                  macOS Style
+                </button>
+                <button
+                  class="preset-btn bg-natural-700 hover:bg-natural-600 py-2 rounded-lg border border-natural-600 transition text-xs"
+                  data-preset="windows"
+                >
+                  Windows Style
+                </button>
+              </div>
+            </div>
+             <div>
+              <div>
+                
+              </div>
+              <div>
+                   <label class="block text-sm font-medium my-2"
+                >Action</label
+              </div>
+              <div class="flex gap-2 flex-col lg:flex-row ">
+              <button
+                id="download-btn"
+                class=" bg-blue-700 text-white px-6 py-3 rounded-lg font-medium flex items-center transition hover:shadow-lg w-full"
+              >
+                <i class="fas fa-download mr-2"></i> Download
+              </button>
+              <button
+                id="replace-btn"
+                class=" bg-blue-700 text-white px-6 py-3 rounded-lg font-medium flex items-center transition hover:shadow-lg w-full "
+              >
+                <i class="fas fa-image mr-2"></i> Replace
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </main>
+
+      <!-- Footer -->
+      <footer class="mt-16 text-center text-natural-500 text-sm">
+        <p>© 2023 BrowserMock. All rights reserved.</p>
+        <p class="mt-2">
+          Made with <i class="fas fa-heart text-red-500"></i> for designers and
+          developers
+        </p>
+      </footer>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
